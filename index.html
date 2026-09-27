@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anime AI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#070b14;color:#eef2ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;height:100vh}
+.app{height:100vh;display:flex}.side{width:245px;background:#090e19;border-right:1px solid #20283a;padding:20px;display:flex;flex-direction:column;gap:9px}
+.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#ffd000,#ff8500);color:#111;display:grid;place-items:center;font-size:22px;font-weight:900}
+.brand{display:flex;align-items:center;gap:11px;margin-bottom:15px}.brand b{font-size:19px}.brand small{display:block;color:#738099}
+button{font:inherit}.new{border:0;background:#ff9d00;color:#17110a;border-radius:12px;padding:12px;font-weight:800}.mode{border:1px solid transparent;background:transparent;color:#aab5c9;text-align:left;border-radius:10px;padding:11px}.mode.active,.mode:hover{background:#131c2d;border-color:#2b3851;color:white}
+.status{margin-top:auto;color:#75839b;font-size:12px}.green{display:inline-block;width:8px;height:8px;border-radius:50%;background:#25d68b;margin-right:7px}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}.top{height:65px;border-bottom:1px solid #20283a;display:flex;justify-content:flex-end;align-items:center;padding:0 20px}.theme{background:#111a2a;color:#ffd05a;border:1px solid #2a354c;border-radius:10px;padding:10px}
+.hero{text-align:center;max-width:850px;margin:auto;padding:25px 20px 120px}.heroIcon{width:88px;height:88px;border-radius:20px;background:linear-gradient(135deg,#ffd000,#ff8500);color:#111;display:grid;place-items:center;font-size:35px;font-weight:900;margin:auto;box-shadow:0 0 40px #ff9d0030}
+h1{font-size:40px;line-height:1.1;margin:22px 0 10px}h1 span{color:#ff9d00}.hero p{color:#7d8aa2}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}.card{background:#0e1727;border:1px solid #263149;color:white;border-radius:15px;text-align:left;padding:16px}.card small{display:block;color:#7e8ba2;margin-top:7px}
+.chat{flex:1;overflow:auto;max-width:850px;width:100%;margin:auto;padding:20px;display:none}.chat.has{display:block}.msg{display:flex;gap:9px;margin:14px 0}.msg.user{justify-content:flex-end}.avatar{width:31px;height:31px;min-width:31px;border-radius:9px;background:#ff9d00;color:#111;display:grid;place-items:center;font-size:10px;font-weight:900}.bubble{max-width:80%;background:#111a2a;border-radius:15px;padding:12px 15px;line-height:1.5}.user .bubble{background:#ff9d00;color:#17110a}
+.composerWrap{width:100%;max-width:900px;margin:auto;padding:0 18px 18px}.composer{display:flex;gap:7px;align-items:end;border:1px solid #29354d;background:#0d1524;border-radius:17px;padding:8px}.composer textarea{flex:1;background:transparent;border:0;outline:0;color:white;resize:none;padding:10px}.send,.mic{width:43px;height:43px;border:0;border-radius:11px}.send{background:#ff9d00;color:#111;font-size:19px}.mic{background:#192338;color:#aebbd0}.label{font-size:11px;color:#718099;margin:6px}.label b{color:#ff9d00}
+.light{background:#f4f6fa;color:#172033}.light .side{background:white;border-color:#dce3ee}.light .top{border-color:#dce3ee}.light .card,.light .composer,.light .bubble{background:white;border-color:#dce3ee;color:#172033}.light textarea{color:#172033}
+@media(max-width:700px){.side{display:none}.hero{padding-top:55px}.hero h1{font-size:32px}.cards{grid-template-columns:1fr}.bubble{max-width:88%}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="brand"><div class="logo">A✦</div><div><b>Anime AI</b><small>Your anime universe</small></div></div>
+<button class="new" id="new">＋ New Chat</button>
+<div style="color:#68758e;font-size:11px;margin:18px 4px 3px;text-transform:uppercase">Modes</div>
+<button class="mode active" data-mode="Anime Assistant">✦ Anime Assistant</button>
+<button class="mode" data-mode="Story Creator">📖 Story Creator</button>
+<button class="mode" data-mode="Character Builder">⚔ Character Builder</button>
+<button class="mode" data-mode="Power System">⚡ Power System</button>
+<div class="status"><span class="green"></span>Anime AI online</div>
+</aside>
+<main class="main">
+<header class="top"><button class="theme" id="theme">☼</button></header>
+<section class="hero" id="hero">
+<div class="heroIcon">A✦</div><h1>How can Anime AI<br><span>assist you?</span></h1>
+<p>Build characters, worlds, powers, stories, and anime ideas.</p>
+<div class="cards">
+<button class="card" data-p="Create a powerful anime protagonist with a unique thunder-based ability."><b>⚡ Create a protagonist</b><small>Design an original anime hero</small></button>
+<button class="card" data-p="Help me create a six-element power system for my anime story."><b>◈ Build a power system</b><small>Create rules and abilities</small></button>
+<button class="card" data-p="Give me an exciting anime episode idea with a mystery and a big reveal."><b>🎬 Create an episode</b><small>Turn an idea into an episode</small></button>
+</div>
+</section>
+<section class="chat" id="chat"></section>
+<div class="composerWrap"><div class="composer"><textarea id="input" rows="1" placeholder="Ask Anime AI anything..."></textarea><button class="mic" id="mic">🎙</button><button class="send" id="send">➤</button></div><div class="label">● Mode: <b id="mode">Anime Assistant</b></div></div>
+</main></div>
+<script>
+let messages=[],currentMode="Anime Assistant";
+const chat=document.querySelector("#chat"),hero=document.querySelector("#hero"),input=document.querySelector("#input"),send=document.querySelector("#send");
+const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+function add(role,text){let d=document.createElement("div");d.className="msg "+role;d.innerHTML=role==="user"?`<div class="bubble">${esc(text)}</div>`:`<div class="avatar">A✦</div><div class="bubble">${esc(text).replace(/\\n/g,"<br>")}</div>`;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+async function ask(text=input.value.trim()){
+ if(!text)return;input.value="";hero.style.display="none";chat.classList.add("has");add("user",text);messages.push({role:"user",content:text});send.disabled=true;
+ let d=document.createElement("div");d.className="msg";d.innerHTML='<div class="avatar">A✦</div><div class="bubble">Anime AI is thinking…</div>';chat.appendChild(d);
+ try{let r=await fetch("/.netlify/functions/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages,mode:currentMode})});let x=await r.json();d.remove();if(!r.ok)throw Error(x.error||"Request failed");add("assistant",x.message);messages.push({role:"assistant",content:x.message})}
+ catch(e){d.remove();add("assistant","⚠ "+e.message)}finally{send.disabled=false}
+}
+send.onclick=()=>ask();input.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();ask()}};
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{document.querySelectorAll(".mode").forEach(x=>x.classList.remove("active"));b.classList.add("active");currentMode=b.dataset.mode;document.querySelector("#mode").textContent=currentMode});
+document.querySelectorAll(".card").forEach(b=>b.onclick=()=>ask(b.dataset.p));
+document.querySelector("#new").onclick=()=>{messages=[];chat.innerHTML="";chat.classList.remove("has");hero.style.display=""};
+document.querySelector("#theme").onclick=()=>document.body.classList.toggle("light");
+document.querySelector("#mic").onclick=()=>{let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return alert("Voice input is not supported here.");let r=new R;r.lang="en-IN";r.onresult=e=>input.value=e.results[0][0].transcript;r.start()};
+</script>
+</body></html>
