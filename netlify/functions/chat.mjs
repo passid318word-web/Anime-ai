@@ -1,1 +1,1 @@
-
+export default async (req) => {};
